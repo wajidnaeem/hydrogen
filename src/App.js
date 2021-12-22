@@ -9,7 +9,7 @@ import { Cart } from "./components/Cart";
 function App() {
   return (
     <div className="App">
-      box raw hydrogen v1 dasdasdabranch
+      V1 Branch
       <NavBar />
       <Cart />
       <Router>
