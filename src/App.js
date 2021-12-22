@@ -9,7 +9,7 @@ import { Cart } from "./components/Cart";
 function App() {
   return (
     <div className="App">
-      V1 Branch
+      V1 Branch on v1
       <NavBar />
       <Cart />
       <Router>
