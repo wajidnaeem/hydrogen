@@ -20,7 +20,7 @@ class ShopProvider extends Component {
       storefrontAccessToken: process.env.REACT_APP_SHOPIFY_API,
     });
 
-    console.log("localStorage :: ", localStorage["checkout-id"]);
+    // console.log("localStorage :: ", localStorage["checkout-id"]);
 
     if (localStorage["checkout-id"]) {
       this.fetchCheckout(localStorage["checkout-id"]);
@@ -36,7 +36,6 @@ class ShopProvider extends Component {
 
   fetchCheckout = (checkout_id) => {
     const checkout = client.checkout.fetch(checkout_id);
-
     this.setState({ checkout: checkout });
   };
 
@@ -53,7 +52,7 @@ class ShopProvider extends Component {
       lineItemsToAdd
     );
 
-    localStorage.setItem({checkout: checkout});
+    localStorage.setItem({ checkout: checkout });
 
     this.setState({ checkout: checkout });
     this.openCart();
