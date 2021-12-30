@@ -52,8 +52,6 @@ class ShopProvider extends Component {
       lineItemsToAdd
     );
 
-    localStorage.setItem({ checkout: checkout });
-
     this.setState({ checkout: checkout });
     this.openCart();
   };
