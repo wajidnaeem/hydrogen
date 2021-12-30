@@ -22,40 +22,37 @@ const ProductPage = () => {
     productbyHnadle,
   } = useContext(ShopContext);
 
-  console.log(
-    "fetchProductWithHandle in productpage ::",
-    fetchProductWithHandle
-  );
+  // console.log(
+  //   "fetchProductWithHandle in productpage ::",
+  //   fetchProductWithHandle
+  // );
 
   useEffect(() => {
     fetchProductWithHandle(handle);
-  }, [fetchProductWithHandle]);
+  }, [fetchProductWithHandle, handle]);
 
   if (!productbyHnadle.title) {
     return <div>....Loading</div>;
   }
 
   return (
-    console.log("product :: ", productbyHnadle),
-    (
-      <Box>
-        <Grid templateColumns="repeat(2,1fr)">
-          <Image src={productbyHnadle.images[0].src} />
-          <Box>
-            <Heading>{productbyHnadle.title}</Heading>
-            <Text>{productbyHnadle.description}</Text>
+    // console.log("product :: ", productbyHnadle),
+    <Box>
+      <Grid templateColumns="repeat(2, 1fr)">
+        <Image src={productbyHnadle.images[0].src} />
+        <Box>
+          <Heading>{productbyHnadle.title}</Heading>
+          <Text>{productbyHnadle.description}</Text>
+          <Text>{productbyHnadle.variants[0].price}</Text>
 
-            <Button
-              onClick={() =>
-                addItemtoCheckout(productbyHnadle.variants[0].id, 1)
-              }
-            >
-              Add to Cart
-            </Button>
-          </Box>
-        </Grid>
-      </Box>
-    )
+          <Button
+            onClick={() => addItemtoCheckout(productbyHnadle.variants[0].id, 1)}
+          >
+            Add to Cart
+          </Button>
+        </Box>
+      </Grid>
+    </Box>
   );
 };
 

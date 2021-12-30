@@ -15,19 +15,49 @@ class ShopProvider extends Component {
   };
 
   componentDidMount() {
-    // console.log("ENV DOMAIN:: ", process.env.REACT_APP_SHOPIFY_DOMAIN);
-    // console.log("ENV API KEY :: ", process.env.REACT_APP_SHOPIFY_API);
-
     client = Client.buildClient({
       domain: process.env.REACT_APP_SHOPIFY_DOMAIN,
       storefrontAccessToken: process.env.REACT_APP_SHOPIFY_API,
     });
-    if (localStorage.checkout_id) {
-      this.fetchCheckout(localStorage.checkout_id);
+
+    console.log("localStorage :: ", localStorage["checkout-id"]);
+
+    if (localStorage["checkout-id"]) {
+      this.fetchCheckout(localStorage["checkout-id"]);
     } else {
       this.createCheckout();
     }
   }
+
+  createCheckout = async () => {
+    const checkout = await client.checkout.create();
+    this.setState({ checkout: checkout });
+  };
+
+  fetchCheckout = (checkout_id) => {
+    const checkout = client.checkout.fetch(checkout_id);
+
+    this.setState({ checkout: checkout });
+  };
+
+  addItemtoCheckout = async (variantId, quantity) => {
+    const lineItemsToAdd = [
+      {
+        variantId: variantId,
+        quantity: parseInt(quantity, 10),
+      },
+    ];
+
+    const checkout = await client.checkout.addLineItems(
+      this.state.checkout.id,
+      lineItemsToAdd
+    );
+
+    localStorage.setItem({checkout: checkout});
+
+    this.setState({ checkout: checkout });
+    this.openCart();
+  };
 
   fetchAllProducts = async () => {
     const products = await client.product.fetchAll();
@@ -39,34 +69,13 @@ class ShopProvider extends Component {
     this.setState({ productbyHnadle: productbyHnadle });
   };
 
-  addItemtoCheckout = async (variantId, quantity) => {
-    const lineItemsToAdd = [
-      {
-        variantId,
-        quantity: parseInt(quantity, 10),
-      },
-    ];
-    const checkout = await client.checkout.addLineItems(
+  removeLineitem = async (LineItemIdstoRemaove) => {
+    const checkout = await client.checkout.removeLineItems(
       this.state.checkout.id,
-      lineItemsToAdd
+      LineItemIdstoRemaove
     );
     this.setState({ checkout: checkout });
-    this.openCart();
   };
-
-  createCheckout = async () => {
-    const checkout = await client.checkout.create();
-    localStorage.setItem("checkout-id", checkout.id);
-    this.setState({ checkout: checkout });
-  };
-
-  fetchCheckout = (checkoutId) => {
-    client.checkout.fetch(checkoutId).then((checkout) => {
-      this.setState({ checkout: checkout });
-    });
-  };
-
-  removeLineitem = async (LineItemIdstoRemaove) => {};
 
   closeCart = async () => {
     this.setState({ isCartOpen: false });
@@ -76,13 +85,17 @@ class ShopProvider extends Component {
     this.setState({ isCartOpen: true });
   };
 
-  closeMenu = async () => {};
-  openMenu = async () => {};
+  closeMenu = async () => {
+    this.setState({ isCartOpen: false });
+  };
+
+  openMenu = async () => {
+    this.setState({ isCartMenu: true });
+  };
 
   static propTypes = {};
 
   render() {
-    console.log(this.state.checkout);
     return (
       <ShopContext.Provider
         value={{
