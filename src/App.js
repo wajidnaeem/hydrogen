@@ -5,21 +5,26 @@ import { TestComponent } from "./pages/testComponent";
 import { ProductPage } from "./pages/ProductPage";
 import { NavBar } from "./components/NavBar";
 import { Cart } from "./components/Cart";
+import { NavMenu } from "./components/NavMenu";
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
     <div className="App">
-      <NavBar />
-      <Cart />
       <Router>
+        <NavBar />
+        <NavMenu />
+        <Cart />
+
         <Routes>
           <Route path="/products/:handle" element={<ProductPage />} />
+
           <Route path="/test" element={<TestComponent />} />
 
           <Route path="/" element={<Home />} />
         </Routes>
+        <Footer />
       </Router>
-      <p>Footer</p>
     </div>
   );
 }
