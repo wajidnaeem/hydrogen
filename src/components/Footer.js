@@ -12,9 +12,7 @@ const Footer = () => {
       >
         <Image src="https://cdn.shopify.com/s/files/1/0472/5705/9496/files/Bath_Bomb_-_Product-5_-_trans_1.png?v=1610123549" />
         <VStack p="2rem">
-          <Link to="/">The Green Blast</Link>
-          <Link to="/">The Blue Berry</Link>
-          <Link to="/">The Yellow Mellow</Link>
+          <Link to="/collections/all">Collections</Link>
         </VStack>
         <VStack p="2rem">
           <Link to="/">About Us</Link>
@@ -30,7 +28,7 @@ const Footer = () => {
           borderTop="1px solid white"
           p="1rem"
         >
-          © Copyright www.learning.com
+          © Copyright www.newvisionsolutions.com
         </Text>
       </Box>
     </Box>

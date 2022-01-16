@@ -12,6 +12,8 @@ class ShopProvider extends Component {
   state = {
     product: {},
     products: [],
+    collection: [],
+    collectionProducts: [],
     productbyHnadle: {},
     checkout: {},
     isCartOpen: false,
@@ -19,12 +21,11 @@ class ShopProvider extends Component {
   };
 
   componentDidMount() {
-    // console.log("localStorage near if :: ", localStorage["checkoutId"]);
     if (localStorage["checkoutId"]) {
       const fetchCheckout = this.fetchCheckout(localStorage["checkoutId"]);
       console.log("fetchCheckout in if :: ", fetchCheckout);
     } else {
-      console.log("createCheckout in if :: ");
+      // console.log("createCheckout in if :: ");
 
       this.createCheckout();
     }
@@ -33,16 +34,10 @@ class ShopProvider extends Component {
   createCheckout = async () => {
     client.checkout.create().then((checkout) => {
       // Do something with the checkout
-      console.log("createCheckout in createCheckout :: ", checkout);
+      // console.log("createCheckout in createCheckout :: ", checkout);
       localStorage.setItem("checkout_id", checkout.id);
       this.setState({ checkout: checkout });
     });
-
-    // const checkout = client.checkout.create();
-    // console.log("createCheckout in createCheckout :: ", checkout);
-
-    // localStorage.setItem("checkout_id", checkout.id);
-    // this.setState({ checkout: checkout });
   };
 
   // fetchCheckout = async (checkout_id) =>{} what is dfiffrence between this and i used
@@ -57,6 +52,42 @@ class ShopProvider extends Component {
       .catch((error) => console.log(error));
   };
 
+  fetchAllProducts = async () => {
+    const products = await client.product.fetchAll();
+    this.setState({ products: products });
+  };
+
+  fetchAllCollections = async () => {
+    client.collection.fetchAllWithProducts().then((collection) => {
+      // Do something with the collections
+      console.log("fetchAllCollections collection:: ", collection);
+      // console.log(collection[0].products);
+
+      this.setState({ collection: collection });
+    });
+  };
+
+  fetchCollectionByHandle = async (collectionId) => {
+    client.collection
+      .fetchWithProducts(collectionId, { productsFirst: 10 })
+      .then((collection) => {
+        // Do something with the collection
+        // console.log("collection:: ", collection);
+        // console.log("collection.products:: ", collection.products);
+
+        const collectionProducts = collection.products;
+        console.log("collectionProducts:: ", collectionProducts);
+
+        this.setState({ collectionProducts: collectionProducts });
+      });
+  };
+
+  fetchProductWithHandle = async (handle) => {
+    const product = await client.product.fetchByHandle(handle);
+    this.setState({ product: product });
+
+    return product;
+  };
   addItemtoCheckout = async (variantId, quantity) => {
     const lineItemsToAdd = [
       {
@@ -74,18 +105,6 @@ class ShopProvider extends Component {
 
     this.setState({ checkout: checkout });
     this.openCart();
-  };
-
-  fetchAllProducts = async () => {
-    const products = await client.product.fetchAll();
-    this.setState({ products: products });
-  };
-
-  fetchProductWithHandle = async (handle) => {
-    const product = await client.product.fetchByHandle(handle);
-    this.setState({ product: product });
-
-    return product;
   };
 
   removeLineItem = async (lineItemIdsToRemove) => {
@@ -118,12 +137,14 @@ class ShopProvider extends Component {
           ...this.state,
           fetchAllProducts: this.fetchAllProducts,
           fetchProductWithHandle: this.fetchProductWithHandle,
+          fetchCollectionByHandle: this.fetchCollectionByHandle,
           closeCart: this.closeCart,
           openCart: this.openCart,
           closeMenu: this.closeMenu,
           openMenu: this.openMenu,
           addItemtoCheckout: this.addItemtoCheckout,
           removeLineItem: this.removeLineItem,
+          fetchAllCollections: this.fetchAllCollections,
         }}
       >
         {this.props.children}
