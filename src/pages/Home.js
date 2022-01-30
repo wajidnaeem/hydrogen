@@ -23,10 +23,6 @@ const Home = () => {
   return (
     <Box>
       <Hero />
-      <RichText
-        heading="The relaxation you’ve been waiting for."
-        text="Our Bath bombs guarantee a fun, relaxing, and colorful night."
-      />
 
       <ImageWithText
         button
@@ -41,28 +37,9 @@ const Home = () => {
         heading="Second Heading"
         text="I'm baby kale chips twee skateboard tattooed, DIY iPhone ugh mixtape tumeric unicorn narwhal. Iceland shoreditch authentic, sartorial vegan twee flannel banh mi bushwick retro farm-to-table single-origin coffee. "
       />
-      <Grid templateColumns={["repeat(1fr)", "repeat(3, 1fr)"]}>
-        {products.map((product) => (
-          <Link to={`/products/${product.handle}`} key={product.id}>
-            <Box
-              _hover={{ opacity: "80%" }}
-              textAlign="center"
-              position="relative"
-            >
-              <Image src={product.images[0].src} />
-              <Text fontWeight="bold" position="absolute" bottom="15%" w="100%">
-                {product.title}
-              </Text>
-              <Text color="gray.500" position="absolute" bottom="5%" w="100%">
-                ${product.variants[0].price}
-              </Text>
-            </Box>
-          </Link>
-        ))}
-      </Grid>
-      <RichText heading="Treat yourself!" />
     </Box>
   );
 };
+class test {}
 
-export { Home };
+export { Home, test };

@@ -32,7 +32,9 @@ const NavMenu = () => {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
               <VStack p="2rem">
+                <Link to="/products/all">All Products</Link>
                 <Link to="/collections/all">Collections</Link>
+                <Link to="/instantsearch">Instant Search Algolia</Link>
               </VStack>
             </DrawerBody>
             <DrawerFooter textAlign="center">

@@ -21,11 +21,17 @@ class ShopProvider extends Component {
   };
 
   componentDidMount() {
-    if (localStorage["checkoutId"]) {
-      const fetchCheckout = this.fetchCheckout(localStorage["checkoutId"]);
+    // if (localStorage["checkoutId"]) {
+
+    // local stoarage use "setitem and getitem"
+
+    if (localStorage.getItem("checkout_id")) {
+      const fetchCheckout = this.fetchCheckout(
+        localStorage.getItem("checkout_id")
+      );
       console.log("fetchCheckout in if :: ", fetchCheckout);
     } else {
-      // console.log("createCheckout in if :: ");
+      console.log("createCheckout in else :: ");
 
       this.createCheckout();
     }
@@ -44,7 +50,7 @@ class ShopProvider extends Component {
   // const checkout = await client.checkout.fetch(checkout_id); why its not support AWAIT
 
   fetchCheckout = async (checkoutId) => {
-    client.checkout
+    const fetchCheckoutcontroll = await client.checkout
       .fetch(checkoutId)
       .then((checkout) => {
         this.setState({ checkout: checkout });
@@ -69,7 +75,7 @@ class ShopProvider extends Component {
 
   fetchCollectionByHandle = async (collectionId) => {
     client.collection
-      .fetchWithProducts(collectionId, { productsFirst: 10 })
+      .fetchWithProducts(collectionId, { productsFirst: 100 })
       .then((collection) => {
         // Do something with the collection
         // console.log("collection:: ", collection);
